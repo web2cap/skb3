@@ -5,7 +5,6 @@ import User from './models/User';
 
 export default async function saveDataInDb(data){
   try{
-    console.log(data.user);
     const user = new User(data.user);
     //console.log(data.user);
     await user.save();
@@ -18,7 +17,7 @@ export default async function saveDataInDb(data){
 
         return (new Pet(petData)).save();
     });
-    console.log('success');
+    //console.log('success');
     return {
       user,
       pets: await Promise.all(promises),
