@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import saveDataInDb from './saveDataInDb';
 import Pet from './models/Pet';
 import User from './models/User';
+import isAdmin from './middlewares/isAdmin';
 
 mongoose.Promise = Promise;
 mongoose.connect('mongodb://public.mgbeta.ru/pkoshelev_skb3');
@@ -14,6 +15,7 @@ mongoose.connect('mongodb://public.mgbeta.ru/pkoshelev_skb3');
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+//app.use(isAdmin);
 
 app.get('/', (req, res) => {
   res.json({
@@ -31,7 +33,7 @@ app.get('/pets', async (req, res) => {
   return res.json(pets);
 });
 
-app.get('/clear', async (req, res) => {
+app.get('/clear', isAdmin, async (req, res) => {
   await User.remove({});
   await Pet.remove({});
   return res.send('DB Clear!');
