@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import Promise from 'bluebird';
+import bodyParser from 'body-parser';
 
 import saveDataInDb from './saveDataInDb';
 import Pet from './models/Pet';
@@ -12,6 +13,7 @@ mongoose.connect('mongodb://public.mgbeta.ru/pkoshelev_skb3');
 
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.json({
@@ -31,7 +33,10 @@ app.get('/pets', async (req, res) => {
 
 app.post('/data', async (req, res) => {
   const data = req.body;
-  saveDataInDb(data);
+  //const rdata = await saveDataInDb(data);
+  //console.log(rdata);
+  //return res.json(data);
+  return res.json(await saveDataInDb(data));
 });
 
 
@@ -79,4 +84,3 @@ kitty.save()
   })
 
 */
-
